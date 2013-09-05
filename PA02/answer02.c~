@@ -1,0 +1,420 @@
+#include "pa02.h"
+
+/* Will halt the program if it returns TRUE */
+/*int testme()
+  {
+  char buffer[1024];
+
+  strcpy(buffer, "foobar");
+  my_strinsert(buffer, "a", 6);
+  printf("result: '%s'\n", buffer);
+
+  return 1;
+  }
+*/
+/**
+ * Count the number of characters in a null-terminated string 's' 
+ * (not counting the null character).
+ *
+ * Example: my_strlen("foo") should yield 3.
+ */
+int my_strlen(const char * s)
+{
+  const char *point_to_input; //This pointer declares what points to the input array
+  point_to_input = s; //points to input array
+  int LineCount;//This counts the number of characters in each line
+  int i;
+
+  LineCount = 0;//This initializes LineCount variable
+
+  for(i = 0; point_to_input[LineCount] != '\0'; i++)  
+    {
+      LineCount++;
+    } 	
+  return (LineCount);
+}
+
+
+/**
+ * Count the number of occurrences of a particular character 'c' in a
+ * null-terminated string 's'.
+ *
+ * Example: my_countchar("foo", 'o') should yield 2.
+ */
+int my_countchar(const char * s, char c)
+{
+  const char *point_to_input2; 
+  int LetterCount;
+  int InputLetterCheck;
+  int i;
+
+  point_to_input2 = s;
+  LetterCount = 0;
+  InputLetterCheck = c;
+
+  for(i=0; point_to_input2[i] != '\0'; i++)
+    {
+      if (point_to_input2[i] == InputLetterCheck)
+	{
+	  LetterCount++;
+	} 
+    }
+
+  return (LetterCount);
+}
+
+/**
+ * Convert an entire null-terminated string 's' to uppercase.  Only
+ * alphabetical characters should be converted; numbers and symbols
+ * should not be affected.  Hint: toupper(c) is a macro that yields
+ * the uppercase version of a character c.
+ *
+ * Example: char foobar[10] = "foobar";
+ * my_strupper(foobar) yields "FOOBAR".
+ */
+void my_strupper(char * s)
+{
+  char *point_to_input3; //This pointer declares what points to the input array
+  int i;
+  int UpperAction;
+  i=0;
+
+  point_to_input3 = s; //points to input array
+
+  for(i=0; point_to_input3[i] != '\0'; i++)
+    {
+      UpperAction = point_to_input3[i];
+      UpperAction = toupper(UpperAction);
+      point_to_input3[i] = UpperAction;	
+    }
+
+}
+
+/**
+ * Convert an entire null-terminated string 's' to lowercase.  Only
+ * alphabetical characters should be converted; numbers and symbols
+ * should not be affected.  Hint: tolower(c) is a macro that yields
+ * the lowercase version of a character 'c'.
+ *
+ * Example: char foobar[10] = "FOOBAR";
+ * my_strupper(foobar) yields "foobar".
+ */
+void my_strlower(char * s)
+{
+  char *point_to_input4; //This pointer declares what points to the input array
+  int i;
+  int LowerAction;
+  i=0;
+
+  point_to_input4 = s; //points to input array
+
+  for(i=0; point_to_input4[i] != '\0'; i++)
+    {
+      LowerAction = point_to_input4[i];
+      LowerAction = tolower(LowerAction);
+      point_to_input4[i] = LowerAction;	
+    }
+}
+
+/**
+ * Copy the contents of a null-terminated string 's2' into the memory
+ * pointed to by 's1'.  Any existing data in 's1' will be overwritten by
+ * the contents of 's2'.  Note: you can assume that there is sufficient
+ * memory available in 's1'.  Hint: Don't forget to terminate the new
+ * string with '\0'!
+ * 
+ * Example: char foo[10];
+ * my_strcpy(foo, "foo") yields "foo".
+ */
+void my_strcpy(char * s1, const char * s2)
+{
+  char *s1pointer;
+  const char *s2pointer;
+  int i;
+
+  s1pointer= s1;
+  s2pointer= s2;
+  i=0;
+
+  for(i=0; s2pointer[i] != '\0'||s1pointer[i]!='\0' ; i++)
+    {
+      s1pointer[i] = s2pointer[i];
+    }
+}	
+	
+
+
+
+
+/**
+ * Copy the first 'n' characters of a null-terminated string 's2' into the
+ * memory pointed to by 's1'. Any existing data in 's1' will be
+ * overwritten by the contents of 's2'.  Note: you can assume that there
+ * is sufficient memory available in 's1'.  Hint: Don't forget to
+ * terminate the new string with '\0'!
+ * 
+ * Example: char foo[10];
+ * my_strncpy(foo, "foo", 1) yields "f".
+ */
+
+void my_strncpy(char * s1, const char * s2, int num)
+{
+  char *s1pointer;
+  const char *s2pointer;
+  int i;
+  int number_char_replace;
+
+  s1pointer = s1;
+  s2pointer = s2;
+  i=0;
+  number_char_replace = num; 
+
+  for(i=0;i<number_char_replace;i++)
+    {
+      s1pointer[i]=s2pointer[i];
+
+    }
+
+  s1pointer[i] ='\0';
+
+}
+
+
+
+/** 
+ * Concatenate (append) the contents of a null-terminated string 's2'
+ * onto the end of the null-terminated string 's1'.  Note: you can
+ * assume that there is sufficient memory available in 's1'.  Hint:
+ * Don't forget to terminate the new string with '\0'!
+ * 
+ * Example: char foo[10] = "foo";
+ * my_strcat(foo, "bar") yields "foobar".
+ */
+void my_strcat(char * s1, const char * s2) 
+{
+  char *s1pointer;
+  const char *s2pointer;
+  int s1length=0;
+  int s2length=0;
+  s1pointer = s1;
+  s2pointer = s2;
+
+
+  while(s1pointer[s1length]!='\0')
+    s1length++;
+  while(s2pointer[s2length]!='\0')
+    {
+      s1pointer[s1length]=s2pointer[s2length];
+      s1length++;
+      s2length++;
+    } 
+  s1pointer[s1length] = '\0';
+
+}
+
+/** 
+ * Concatenate (append) the first n characters of a null-terminated
+ * string 's2' onto the end of the null-terminated string 's1'.  Note: you
+ * can assume that there is sufficient memory available in 's1'.  Hint:
+ * Don't forget to terminate the new string with '\0'!
+ * 
+ * Example: char foo[10] = "foo";
+ * my_strcat(foo, "bar", 1) yields "foob".
+ */
+void my_strncat(char * s1, const char * s2, int num)
+{
+  char *s1pointer;
+  const char *s2pointer;
+  int s1length=0;
+  int s2length=0;
+  int n=0;
+  //int i = 0;
+  s1pointer = s1;
+  s2pointer=s2;  
+  n=num;
+
+
+  while(s1pointer[s1length]!='\0')
+    s1length++;
+  //while(s2pointer[s2length]!='\0')
+  while(s2length<n)
+    {
+      s1pointer[s1length]=s2pointer[s2length];
+      s1length++;
+      s2length++;
+    }
+
+  s1pointer[s1length] = '\0';
+}
+
+
+
+/**
+ * Return a pointer to the first occurrence of a null-terminated
+ * substring 's2' in a null-terminated string 's1'.  If 's2' does not appear
+ * in 's1', the empty (NULL) pointer is returned.
+ * 
+ * Example: my_strstr("hello world!", "test") will yield 0 (NULL).
+ * Example(2): my_strstr("foobar", "bar") will yield a pointer to the
+ * "bar" portion of the "foobar" argument.
+ */
+
+const char *my_strstr(const char * s1, const char * s2)
+{
+  const char *s1pointer;
+  const char *s2pointer;
+  int Result = 0;
+  const char * ReturnPointer;
+  int i=0;
+  int k=0;
+
+  s1pointer = s1;
+  s2pointer = s2;
+    
+  for(i=0; s1pointer[i]!='\0'; i++)
+    {
+      for(k=0;s2pointer[k]!='\0';k++)
+	{
+	  if (s1pointer[i]==s2pointer[k])
+	    {
+	      Result = 1;
+	    }
+	}
+    }
+   
+  if(Result ==1)
+    {
+      ReturnPointer =  s2pointer;
+    }
+
+
+
+    
+
+
+  return (ReturnPointer);
+}
+
+
+
+/**
+ * Insert a null-terminated string s2 in the null-terminated string s1
+ * at position pos.  All characters following position pos in s1 will
+ * be moved to follow directly after the inserted characters from s2;
+ * no characters will be overwritten.  Note: you can assume that there
+ * is sufficient memory available in s1.
+ * 
+ * Hint: there is no need to create any temporary memory; simply copy
+ * the contents of the string after position pos to its new location
+ * starting from the back of the string and going forwards.
+ * 
+ * Insertions should happen BEFORE the character position referenced
+ * by pos.  In other words, inserting s2 at position 0 (the first
+ * character of a string) in s1 is equivalent to the string s2
+ * followed by string s1.
+ * 
+ * If the character position pos is higher (or equivalent to) the
+ * length of string s1, s2 will simply be appended to the end of s1
+ * (i.e. it is equivalent to my_strcat(s1, s2);
+ * 
+ * Example: char foo[10] = "foo";
+ * my_strinsert(foo, "bar", 0) yields "barfoo".
+ * 
+ * Example(2): char foo[10] = "foo";
+ * my_strinsert(foo, "bar", 100) yields "foobar".
+ */
+void my_strinsert(char *s1, const char *s2, int pos)
+{
+  int  s1len = my_strlen(s1);
+  int s2len = my_strlen(s2);
+  int distance;
+  distance  = s2len + pos;
+  int i = 0;
+  int t=0;
+  for(i = 0; pos<distance;i++)
+    {
+      s1[distance-t] = s2[i];
+      t++;
+    }
+
+  /*  int* end=0;
+  int s2len=0;
+  int distance = 0;
+  int i=0;
+  int temp=0;
+  for(temp = 0;s1[temp]<='\0';temp++)
+    {
+      if (s1[temp]='\0')
+	{
+	  end=s1[temp];
+	}
+    }
+
+  s2len =my_strlen(s2);
+  distance = end +s2len;  
+  
+  for(i=0;i<distance;i++) 
+    {
+      s1[distance-i] = s1[pos];
+      pos++;     
+    }
+  return;
+  */
+}
+ 
+#ifdef MYTEST
+int main()
+{
+  int i;
+  char buffer[1024];
+  for(i = 0; i < 1024; ++i)
+    buffer[i] = -1;
+  strcpy(buffer, "abcde");
+  my_strinsert(buffer, "foo", 2);
+  for(i = 0; i < 10; ++i)
+    printf("buffer[%d] = %d (i.e., '%c')\n", i, buffer[i], buffer[i]);
+  printf("Result = '%s'\n" , buffer);
+  return 0;
+}
+#endif
+  
+  
+/**
+ * Delete a portion of the null-terminated string s that starts at
+ * character position pos and is length characters long.  All
+ * characters following position pos + length in s will be moved up to
+ * follow directly after the characters before position pos. 
+ * 
+ * Hint: there is no need to create any temporary memory; simply copy
+ * the contents of the string after position pos + length to their new
+ * location.
+ * 
+ * Deletions should happen BEFORE the character position referenced by
+ * pos.  In other words, deleting position 0 (the first character of a
+ * string) in s means will start deleting from the first character.
+ *
+ * If the character position pos is higher (or equivalent to) the
+ * length of string s, the function will do nothing.
+ * 
+ * If the length of the deleted portion from its starting position pos
+ * extends past the end of the string, the remainder of the string
+ * will be deleted.
+ * 
+ * Example: char foo[10] = "foobar";
+ * my_strdelete(foo, 3, 3) yields "foo".
+ *
+ * Example(2): char foo[10] = "foobar";
+ * my_strdelete(foo, 0, 3) yields "bar".
+ * 
+ * Example(3): char foo[10] = "foobar";
+ * my_strdelete(foo, 0, 34) yields "".
+ * 
+ * Example(4): char foo[10] = "foobar";
+ * my_strdelete(foo, 2, 30) yields "fo";
+ */
+void my_strdelete(char *s, int pos, int length)
+{
+  
+}
+
+
