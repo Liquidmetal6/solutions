@@ -325,34 +325,43 @@ const char *my_strstr(const char * s1, const char * s2)
  */
 void my_strinsert(char *s1, const char *s2, int pos)
 {
+  
+
   int  s1len = my_strlen(s1);
   int s2len = my_strlen(s2);
-  int distance=0;
-  
-  int i = 0;
-  int x = 0;
+  char *s1end=NULL; 
+  char *pos_pointer=NULL;
+  char *LengthPointer = NULL;
+  int i=0;
   int t=0;
-  if(pos>s1len)
-    pos = s1len;  
-  distance = pos+s2len;
-  s1[distance] = '\0';
 
-  x=pos;
-  for(i=0; i<=s2len;i++)
-    {
-      s1[distance-i]= s1[x];
-      x=x+1;
-    }
-  /* 
-   for(t=0; s2[t]!='\0'; t++)
-    {
-    s1[pos]=s2[t];
-    pos=pos+1; 
-    
-    }
-  */
-      return;
 
+   if (pos>s1len)
+    {
+      pos = s1len;
+    }  
+  else if(pos<0)
+    {
+      pos = 0;
+    }
+   s1end= &s1[s1len];
+   pos_pointer = &s1[pos];
+   LengthPointer = &s1[s1len+s2len];
+
+    for(i = 0;i<=s1len;i++)
+     {
+       *LengthPointer = *s1end;  
+       LengthPointer--;
+       s1end--;
+     }
+
+     for(t=0; t<s2len; t++)
+     {
+      *pos_pointer= s2[t];
+      pos_pointer++;
+      }
+  
+   return;
 }
 
   #ifdef MYTEST
@@ -368,7 +377,7 @@ void my_strinsert(char *s1, const char *s2, int pos)
     // printf("Result = '%s'\n" , buffer);
   
   
-  my_strinsert(buffer, "foo", 15);
+  my_strinsert(buffer, "foo",2);
    for(i = 0; i < 20; ++i)
   printf("buffer[%d] = %d (i.e., '%c')\n", i, buffer[i], buffer[i]);
   printf("Result = '%s'\n" , buffer);

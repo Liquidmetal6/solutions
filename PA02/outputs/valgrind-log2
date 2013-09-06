@@ -1,0 +1,91 @@
+==13357== Memcheck, a memory error detector
+==13357== Copyright (C) 2002-2011, and GNU GPL'd, by Julian Seward et al.
+==13357== Using Valgrind-3.7.0 and LibVEX; rerun with -h for copyright info
+==13357== Command: ./pa02 inputs/input2
+==13357== Parent PID: 13348
+==13357== 
+--13357-- 
+--13357-- Valgrind options:
+--13357--    --suppressions=/usr/lib/valgrind/debian-libc6-dbg.supp
+--13357--    --tool=memcheck
+--13357--    --leak-check=full
+--13357--    --verbose
+--13357--    --log-file=outputs/valgrind-log2
+--13357-- Contents of /proc/version:
+--13357--   Linux version 3.5.0-39-generic (buildd@roseapple) (gcc version 4.6.3 (Ubuntu/Linaro 4.6.3-1ubuntu5) ) #60~precise1-Ubuntu SMP Wed Aug 14 15:38:41 UTC 2013
+--13357-- Arch and hwcaps: AMD64, amd64-sse3-cx16
+--13357-- Page sizes: currently 4096, max supported 4096
+--13357-- Valgrind library directory: /usr/lib/valgrind
+--13357-- Reading syms from /home/matt/ECE264/solutions/PA02/pa02 (0x400000)
+--13357-- Reading syms from /lib/x86_64-linux-gnu/ld-2.15.so (0x4000000)
+--13357--   Considering /lib/x86_64-linux-gnu/ld-2.15.so ..
+--13357--   .. CRC mismatch (computed 269450ce wanted 94894502)
+--13357--   Considering /usr/lib/debug/lib/x86_64-linux-gnu/ld-2.15.so ..
+--13357--   .. CRC is valid
+--13357-- Reading syms from /usr/lib/valgrind/memcheck-amd64-linux (0x38000000)
+--13357--   Considering /usr/lib/valgrind/memcheck-amd64-linux ..
+--13357--   .. CRC mismatch (computed fd32bc40 wanted 1b1bde8c)
+--13357--    object doesn't have a symbol table
+--13357--    object doesn't have a dynamic symbol table
+--13357-- Reading suppressions file: /usr/lib/valgrind/debian-libc6-dbg.supp
+--13357-- Reading suppressions file: /usr/lib/valgrind/default.supp
+==13357== embedded gdbserver: reading from /tmp/vgdb-pipe-from-vgdb-to-13357-by-matt-on-???
+==13357== embedded gdbserver: writing to   /tmp/vgdb-pipe-to-vgdb-from-13357-by-matt-on-???
+==13357== embedded gdbserver: shared mem   /tmp/vgdb-pipe-shared-mem-vgdb-13357-by-matt-on-???
+==13357== 
+==13357== TO CONTROL THIS PROCESS USING vgdb (which you probably
+==13357== don't want to do, unless you know exactly what you're doing,
+==13357== or are doing some strange experiment):
+==13357==   /usr/lib/valgrind/../../bin/vgdb --pid=13357 ...command...
+==13357== 
+==13357== TO DEBUG THIS PROCESS USING GDB: start GDB like this
+==13357==   /path/to/gdb ./pa02
+==13357== and then give GDB the following command
+==13357==   target remote | /usr/lib/valgrind/../../bin/vgdb --pid=13357
+==13357== --pid is optional if only one valgrind process is running
+==13357== 
+--13357-- REDIR: 0x40189e0 (strlen) redirected to 0x380625c7 (???)
+--13357-- Reading syms from /usr/lib/valgrind/vgpreload_core-amd64-linux.so (0x4a25000)
+--13357--   Considering /usr/lib/valgrind/vgpreload_core-amd64-linux.so ..
+--13357--   .. CRC mismatch (computed 8f05ac98 wanted c6d0ab1a)
+--13357--    object doesn't have a symbol table
+--13357-- Reading syms from /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so (0x4c27000)
+--13357--   Considering /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so ..
+--13357--   .. CRC mismatch (computed fc059af4 wanted ffc668e8)
+--13357--    object doesn't have a symbol table
+--13357-- REDIR: 0x4018850 (index) redirected to 0x4c2bc60 (index)
+--13357-- REDIR: 0x40188d0 (strcmp) redirected to 0x4c2cc20 (strcmp)
+--13357-- Reading syms from /lib/x86_64-linux-gnu/libc-2.15.so (0x4e32000)
+--13357--   Considering /lib/x86_64-linux-gnu/libc-2.15.so ..
+--13357--   .. CRC mismatch (computed d1cc6f49 wanted 7994f9f0)
+--13357--   Considering /usr/lib/debug/lib/x86_64-linux-gnu/libc-2.15.so ..
+--13357--   .. CRC is valid
+--13357-- REDIR: 0x4ebee40 (strcasecmp) redirected to 0x4a25610 (_vgnU_ifunc_wrapper)
+--13357-- REDIR: 0x4ebb1e0 (strnlen) redirected to 0x4a25610 (_vgnU_ifunc_wrapper)
+--13357-- REDIR: 0x4ec1110 (strncasecmp) redirected to 0x4a25610 (_vgnU_ifunc_wrapper)
+--13357-- REDIR: 0x4ebcbd0 (__GI_strrchr) redirected to 0x4c2ba80 (__GI_strrchr)
+--13357-- REDIR: 0x4ec4d10 (strchrnul) redirected to 0x4c2e3b0 (strchrnul)
+--13357-- REDIR: 0x4eb5560 (free) redirected to 0x4c2a7c0 (free)
+==13357== 
+==13357== Process terminating with default action of signal 2 (SIGINT)
+==13357==    at 0x4F1890E: __write_nocancel (syscall-template.S:82)
+==13357==    by 0x4EAB882: _IO_file_write@@GLIBC_2.2.5 (fileops.c:1289)
+==13357==    by 0x4EAB749: new_do_write (fileops.c:543)
+==13357==    by 0x4EACEB4: _IO_do_write@@GLIBC_2.2.5 (fileops.c:516)
+==13357==    by 0x4EAE837: _IO_flush_all_lockp (genops.c:849)
+==13357==    by 0x4EAE994: _IO_cleanup (genops.c:1010)
+==13357==    by 0x4E6D94F: __run_exit_handlers (exit.c:91)
+==13357==    by 0x4E6D984: exit (exit.c:100)
+==13357==    by 0x4E53773: (below main) (libc-start.c:258)
+==13357== 
+==13357== HEAP SUMMARY:
+==13357==     in use at exit: 0 bytes in 0 blocks
+==13357==   total heap usage: 0 allocs, 0 frees, 0 bytes allocated
+==13357== 
+==13357== All heap blocks were freed -- no leaks are possible
+==13357== 
+==13357== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 2 from 2)
+--13357-- 
+--13357-- used_suppression:      2 dl-hack3-cond-1
+==13357== 
+==13357== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 2 from 2)
