@@ -327,26 +327,30 @@ void my_strinsert(char *s1, const char *s2, int pos)
 {
   int  s1len = my_strlen(s1);
   int s2len = my_strlen(s2);
-  int distance;
-  distance  = s2len + pos;
+  int distance=0;
+  
   int i = 0;
+  int x = 0;
   int t=0;
   if(pos>s1len)
     pos = s1len;  
+  distance = pos+s2len;
+  s1[distance] = '\0';
 
+  x=pos;
   for(i=0; i<=s2len;i++)
     {
-      s1[distance-i]= s1[i];
+      s1[distance-i]= s1[x];
+      x=x+1;
     }
-  
-    for(t=0; t<=s2len; t++)
+  /* 
+   for(t=0; s2[t]!='\0'; t++)
     {
     s1[pos]=s2[t];
     pos=pos+1; 
-    if (s2[t] =='\0');
-       s1[pos] = '\0';    
+    
     }
-
+  */
       return;
 
 }
@@ -359,14 +363,18 @@ void my_strinsert(char *s1, const char *s2, int pos)
   for(i = 0; i < 1024; ++i)
   buffer[i] = -1;
   strcpy(buffer, "abcde");
-  my_strinsert(buffer, "foo", 2);
   for(i = 0; i < 10; ++i)
+    // printf("buffer[%d] = %d (i.e., '%c')\n", i, buffer[i], buffer[i]);
+    // printf("Result = '%s'\n" , buffer);
+  
+  
+  my_strinsert(buffer, "foo", 15);
+   for(i = 0; i < 20; ++i)
   printf("buffer[%d] = %d (i.e., '%c')\n", i, buffer[i], buffer[i]);
   printf("Result = '%s'\n" , buffer);
   return 0;
   }
   #endif
-
   
 /**
  * Delete a portion of the null-terminated string s that starts at
