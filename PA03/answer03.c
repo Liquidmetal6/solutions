@@ -62,9 +62,25 @@
 
 int * readIntegers(const char * filename, int * numberOfIntegers)
 {
-    return NULL;
-}
+FILE* fp = fopen(filename, "r");
+  if(fp!=NULL)
+    { 
+       
+     
+      fclose(fp);
+    }
 
+
+
+  return NULL;
+}
+/*#ifdef MYTEST
+int main()
+{
+
+}
+#endif
+*/
 /**
  * Sort an (ascending) array of integers
  *
