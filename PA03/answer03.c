@@ -4,7 +4,7 @@
 #include <stdlib.h>
 
 /**
- * Read a file of integers.
+ * Read a file of integersC.
  *
  * Arguments:
  *
@@ -62,25 +62,59 @@
 
 int * readIntegers(const char * filename, int * numberOfIntegers)
 {
+  FILE* fp;
+
 FILE* fp = fopen(filename, "r");
+ 
+  
+
+  //fclose(fp);  
+// int count = 0;
+ /* while(fscanf(fp, "%d,", &count)>0)
+   {
+     numberOfIntegers++;
+     }*/
+ //printf("numberOfIntegers is %d \n", *numberOfIntegers);
+
+ /* while(fp!=feof(fp))
+   {
+     count++;
+   }
+ */
+ // printf("count is %d\n", count);
+
+
+
+/* int InitVariable = 50;//This is a variable to intiliaze following array
+ int *InArray[InitVariable];//Initializes the array to receive data before Malloc can be used
+
   if(fp!=NULL)
     { 
+      
+       fscanf(fp, "%c",InArray );
+      InArray = (int)malloc(sizeof(int) *10);
        
      
       fclose(fp);
-    }
-
+      }
+*/ 
 
 
   return NULL;
 }
-/*#ifdef MYTEST
+#ifdef MYTEST
 int main()
 {
-
+  /* int  x[4]=0;
+  x[0] = 3;
+  x[1] = 2;
+  x[2] = 5;
+  x[3] = 1;
+  x[4] = 8;
+  sort(x,4);*/
 }
 #endif
-*/
+
 /**
  * Sort an (ascending) array of integers
  *
@@ -120,7 +154,12 @@ int main()
  */
 void sort(int * arr, int length)
 {
-    
+  /*  int i=0;
+  int index1 = i+1;
+  int index2 = length;  
+  int *pivot = &arr[i];
+  */
+
 }
 
 /**
