@@ -62,46 +62,39 @@
 
 int * readIntegers(const char * filename, int * numberOfIntegers)
 {
-  FILE* fp;
 
-FILE* fp = fopen(filename, "r");
- 
+  FILE* fp = fopen(filename, "r");
+  int i = 0;  
+  int count = 0;
   
-
-  //fclose(fp);  
-// int count = 0;
- /* while(fscanf(fp, "%d,", &count)>0)
-   {
-     numberOfIntegers++;
-     }*/
- //printf("numberOfIntegers is %d \n", *numberOfIntegers);
-
- /* while(fp!=feof(fp))
-   {
-     count++;
-   }
- */
- // printf("count is %d\n", count);
-
-
-
-/* int InitVariable = 50;//This is a variable to intiliaze following array
- int *InArray[InitVariable];//Initializes the array to receive data before Malloc can be used
-
-  if(fp!=NULL)
-    { 
-      
-       fscanf(fp, "%c",InArray );
-      InArray = (int)malloc(sizeof(int) *10);
-       
-     
-      fclose(fp);
-      }
-*/ 
-
-
-  return NULL;
+  if(fp== NULL)
+    {
+      return NULL;
+    }
+  //
+ printf("%d\n",*numberOfIntegers);
+  while(fscanf(fp, "%d", &count)>0)
+     {
+      (*numberOfIntegers)++;
+    }
+  
+  // int array;
+ int *array  = malloc(count * sizeof(int));
+  fseek(fp, 0,SEEK_SET);
+  
+  while(!feof(fp))
+    {
+      fscanf(fp, "%d", &array[i]);
+      i++;
+    }
+  fclose(fp);
+  
+  
+  
+  
+  return (array);
 }
+
 #ifdef MYTEST
 int main()
 {
@@ -154,11 +147,25 @@ int main()
  */
 void sort(int * arr, int length)
 {
-  /*  int i=0;
-  int index1 = i+1;
-  int index2 = length;  
-  int *pivot = &arr[i];
-  */
+  /* int  i = 0;
+  int *pivot=arr[i];  
+  int index1 = arr[i+1];
+  int index2 = arr[length];
+  int j = 0;
+  int bigger[length] = 0;
+  int smaller[length] = 0;
+  int temp = 0;
+
+  for(j=0; j<length;j++)
+    {
+      if (arr[j+1]<arr[length])//swap!
+	{
+	  temp = arr[j+1]; 
+	  bigger[i] = arr[length];
+	  smaller[i] = temp;
+	  i++;
+	}
+	}*/
 
 }
 
