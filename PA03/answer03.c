@@ -66,20 +66,21 @@ int * readIntegers(const char * filename, int * numberOfIntegers)
   FILE* fp = fopen(filename, "r");
   int i = 0;  
   int count = 0;
-  
+  int val = 0;  
   if(fp== NULL)
     {
       return NULL;
     }
   //
- printf("%d\n",*numberOfIntegers);
-  while(fscanf(fp, "%d", &count)>0)
-     {
+  printf("%d\n",*numberOfIntegers);
+  while(fscanf(fp, "%d", &val)>0)
+    {
+      count++;      
       (*numberOfIntegers)++;
     }
   
   // int array;
- int *array  = malloc(count * sizeof(int));
+  int *array  = malloc(count * sizeof(int));
   fseek(fp, 0,SEEK_SET);
   
   while(!feof(fp))
@@ -88,10 +89,6 @@ int * readIntegers(const char * filename, int * numberOfIntegers)
       i++;
     }
   fclose(fp);
-  
-  
-  
-  
   return (array);
 }
 
@@ -147,29 +144,16 @@ int main()
  */
 void sort(int * arr, int length)
 {
-  /* int  i = 0;
-  int *pivot=arr[i];  
+   int  i = 0;
+  int pivot=arr[i];  
   int index1 = arr[i+1];
   int index2 = arr[length];
-  int j = 0;
-  int bigger[length] = 0;
-  int smaller[length] = 0;
-  int temp = 0;
+  
 
-  for(j=0; j<length;j++)
-    {
-      if (arr[j+1]<arr[length])//swap!
-	{
-	  temp = arr[j+1]; 
-	  bigger[i] = arr[length];
-	  smaller[i] = temp;
-	  i++;
-	}
-	}*/
 
+  return;
 }
-
-/**
+/***
  * Use binary search to find 'key' in a sorted array of integers
  *
  * Arguments:
