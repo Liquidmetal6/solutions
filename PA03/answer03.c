@@ -152,7 +152,7 @@ void sorthelper(int * arr,int ind1, int ind2)
   int w = ind1+1;
   // int i = 0;
 
-  if (ind2 - ind1 <= 1)
+  if (ind2 - ind1 < 1)
     {
       return;
     }
@@ -172,32 +172,6 @@ void sorthelper(int * arr,int ind1, int ind2)
        sorthelper(arr, w ,ind2); 
 	 
 }	   
-
-
- /* int left = ind1 + 1;
-  int right = ind2;
- int pivot = arr[ind1];
- 
- while (left < right)
-    {
-      while (arr[left] < pivot)
-	{
-	  left ++;
-	}
-      while (arr[right] > pivot)
-	{
-	  right--;
-	  printf("made it");
-	}
-      int temp = 0;
-      temp = arr[left];
-      arr[left] = arr[right];
-      arr[right] = temp;
-    }
-  //move the pivot to the right place
-  sorthelper(arr, ind1, right+1);  left - 1 ? */
-  // sorthelper(arr, right-1, ind2); /* right + 1 ? */ 
-
 
 
 void sort(int * arr, int length)
