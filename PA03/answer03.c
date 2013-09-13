@@ -168,8 +168,8 @@ void sorthelper(int * arr,int ind1, int ind2)
        swap(&arr[ind1], &arr[w-1]);//swap pivot with one less then write spot
        
        // TODO check these indicies are correct
-       sorthelper(arr, ind1, w-2); // don't include the pivot
-       sorthelper(arr, w,ind2); 
+       sorthelper(arr, ind1, w-1); // don't include the pivot
+       sorthelper(arr, w ,ind2); 
 	 
 }	   
 
