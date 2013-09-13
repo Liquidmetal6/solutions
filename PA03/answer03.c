@@ -137,23 +137,44 @@ int main()
  * sort.
  *
  */
- /*
+ 
 void swap(int* A, int* B)
 {
-  int x;
-  x = *A;
+  int t;
+  t = *A;
  *A = *B;
- *B=x;
- }*/
+ *B=t;
+ }
 
 void sorthelper(int * arr,int ind1, int ind2)
 {
+  int r = ind1+1;
+  int w = ind1+1;
+  // int i = 0;
 
   if (ind2 == ind1)
     {
       return;
     }
-  int left = ind1 + 1;
+ 
+  for(r=ind1+1; r<=ind2;r++)//For r starting at one bigger then pivot and less then the length(ind2), increment r by one each time
+	 {
+	   if(arr[r] < arr[ind1])// if read is bigger then pivot, increment w and swap w and r
+	     { 
+	       swap(&arr[w],&arr[r]);
+	       w++;	       	   
+	     } 
+	 }
+       swap(&arr[ind1], &arr[w-1]);//swap pivot with one less then write spot
+       
+
+       sorthelper(arr, ind1,w-1);
+       sorthelper(arr, w ,ind2); 
+	 
+}	   
+
+
+ /* int left = ind1 + 1;
   int right = ind2;
  int pivot = arr[ind1];
  
@@ -165,7 +186,8 @@ void sorthelper(int * arr,int ind1, int ind2)
 	}
       while (arr[right] > pivot)
 	{
-	  right --;
+	  right--;
+	  printf("made it");
 	}
       int temp = 0;
       temp = arr[left];
@@ -173,9 +195,10 @@ void sorthelper(int * arr,int ind1, int ind2)
       arr[right] = temp;
     }
   //move the pivot to the right place
-  sorthelper(arr, ind1, right+1); /* left - 1 ? */
-  sorthelper(arr, right-1, ind2); /* right + 1 ? */ 
-}
+  sorthelper(arr, ind1, right+1);  left - 1 ? */
+  // sorthelper(arr, right-1, ind2); /* right + 1 ? */ 
+
+
 
 void sort(int * arr, int length)
 {
@@ -253,5 +276,5 @@ int search_helper(int *arr, int low, int high, int key)
 
 int search(int * arr, int length, int key)
 {
-  return (search_helper(arr, 0, length, key));
+  return search_helper(arr, 0, length, key);
 }
