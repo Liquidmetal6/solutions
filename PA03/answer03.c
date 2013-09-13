@@ -137,100 +137,52 @@ int main()
  * sort.
  *
  */
+ /*
 void swap(int* A, int* B)
 {
   int x;
   x = *A;
  *A = *B;
  *B=x;
-}
-void sortHelper(int * arr,int ind1, int ind2)
+ }*/
+
+void sorthelper(int * arr,int ind1, int ind2)
 {
-  // int left = 0;
-  int i=0;
-  int pivot = arr[i];
-  int right = arr[ind2];
-  int left = arr[ind1];
-    //one if and 3 while loops inside of each other
- while(arr[left]<pivot)
+
+  if (ind2 == ind1)
     {
-      left++;
-    }
- while(arr[right]>pivot)
-    {
-      right--;
-      //arr[left]>pivot
-	//arr[right]<pivot
-      // swap (*left, *right);
-  if(ind2==ind1)
-    {//no need to sort
       return;
     }
-  left = ind1;
-  right = ind2;
-  pivot = arr[ind1];
-  while(left<right)
+  int left = ind1 + 1;
+  int right = ind2;
+ int pivot = arr[ind1];
+ 
+ while (left < right)
     {
-
-      while (arr[left]<pivot);
+      while (arr[left] < pivot)
 	{
-	  left++;
+	  left ++;
 	}
-      while(arr[right]>pivot);
+      while (arr[right] > pivot)
 	{
-	  right--;
-	} 
-       swap(arr[left],arr[right])
+	  right --;
+	}
+      int temp = 0;
+      temp = arr[left];
+      arr[left] = arr[right];
+      arr[right] = temp;
     }
   //move the pivot to the right place
- sorthelper(arr, ind1, right+);/*left-1?determine how to pass the farthest point, left increments*/
- sorthelper(arr, right-1, ind2);/*rightshould decrement*/
-    }
-
+  sorthelper(arr, ind1, right+1); /* left - 1 ? */
+  sorthelper(arr, right-1, ind2); /* right + 1 ? */ 
 }
-
-
-
 
 void sort(int * arr, int length)
 {
-  /* int i=0;
-  int first= arr[i];
-  int last = arr[length]; 
-  int pivdex=0;
-  if(first<last)
-    {
-      sortHelper(arr, first, last, pivdex)
-      sort(*arr,first)
-    }
-
-  */
- /* int i=0;
-  int *pivot_target;
-  pivot_target = &arr[i+1];
-  int *read;
-  read =&arr[i+1];
-  int *pivot;
-  pivot=&arr[i];  
- printf("1 target is %d\n read is %d\n pivot is %d\n ", *pivot_target, *read, *pivot);
-  while(pivot>read)
-    {
-      *read++; 	 
-    }
-  pivot_target++;
-
-   if(pivot>read)
-    {
-      *pivot_target++;	
-      printf("made it here");  
-      }*/
-  // swap(*pivot_target++, *read);
-  
-
-  
-  // }
-  // printf("1 target is %d\n read is %d\n pivot is %d\n ", *pivot_target, *read, *pivot);
-  
+  int ind1 = 0;
+  int ind2 = 0;
+  ind2 = length-1;
+  sorthelper(arr, ind1, ind2); 
   return;
 }
 
