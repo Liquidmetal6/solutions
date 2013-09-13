@@ -72,7 +72,7 @@ int * readIntegers(const char * filename, int * numberOfIntegers)
       return NULL;
     }
   //
-  printf("%d\n",*numberOfIntegers);
+  // printf("%d\n",*numberOfIntegers);
   while(fscanf(fp, "%d", &val)>0)
     {
       count++;      
@@ -91,20 +91,15 @@ int * readIntegers(const char * filename, int * numberOfIntegers)
   fclose(fp);
   return (array);
 }
-
+/*
 #ifdef MYTEST
 int main()
 {
-  /* int  x[4]=0;
-  x[0] = 3;
-  x[1] = 2;
-  x[2] = 5;
-  x[3] = 1;
-  x[4] = 8;
-  sort(x,4);*/
+  int xara[10] = (1,6,4,8,3,5,4,1,8,9);
+
 }
 #endif
-
+*/
 /**
  * Sort an (ascending) array of integers
  *
@@ -142,17 +137,105 @@ int main()
  * sort.
  *
  */
+void swap(int* A, int* B)
+{
+  int x;
+  x = *A;
+ *A = *B;
+ *B=x;
+}
+void sortHelper(int * arr,int ind1, int ind2)
+{
+  // int left = 0;
+  int i=0;
+  int pivot = arr[i];
+  int right = arr[ind2];
+  int left = arr[ind1];
+    //one if and 3 while loops inside of each other
+ while(arr[left]<pivot)
+    {
+      left++;
+    }
+ while(arr[right]>pivot)
+    {
+      right--;
+      //arr[left]>pivot
+	//arr[right]<pivot
+      // swap (*left, *right);
+  if(ind2==ind1)
+    {//no need to sort
+      return;
+    }
+  left = ind1;
+  right = ind2;
+  pivot = arr[ind1];
+  while(left<right)
+    {
+
+      while (arr[left]<pivot);
+	{
+	  left++;
+	}
+      while(arr[right]>pivot);
+	{
+	  right--;
+	} 
+       swap(arr[left],arr[right])
+    }
+  //move the pivot to the right place
+ sorthelper(arr, ind1, right+);/*left-1?determine how to pass the farthest point, left increments*/
+ sorthelper(arr, right-1, ind2);/*rightshould decrement*/
+    }
+
+}
+
+
+
+
 void sort(int * arr, int length)
 {
-   int  i = 0;
-  int pivot=arr[i];  
-  int index1 = arr[i+1];
-  int index2 = arr[length];
+  /* int i=0;
+  int first= arr[i];
+  int last = arr[length]; 
+  int pivdex=0;
+  if(first<last)
+    {
+      sortHelper(arr, first, last, pivdex)
+      sort(*arr,first)
+    }
+
+  */
+ /* int i=0;
+  int *pivot_target;
+  pivot_target = &arr[i+1];
+  int *read;
+  read =&arr[i+1];
+  int *pivot;
+  pivot=&arr[i];  
+ printf("1 target is %d\n read is %d\n pivot is %d\n ", *pivot_target, *read, *pivot);
+  while(pivot>read)
+    {
+      *read++; 	 
+    }
+  pivot_target++;
+
+   if(pivot>read)
+    {
+      *pivot_target++;	
+      printf("made it here");  
+      }*/
+  // swap(*pivot_target++, *read);
   
 
-
+  
+  // }
+  // printf("1 target is %d\n read is %d\n pivot is %d\n ", *pivot_target, *read, *pivot);
+  
   return;
 }
+
+
+
 /***
  * Use binary search to find 'key' in a sorted array of integers
  *
@@ -197,9 +280,26 @@ void sort(int * arr, int length)
  * }
  * return -1;
  */
-int search(int * arr, int length, int key)
+
+
+int search_helper(int *arr, int low, int high, int key)
 {
-    return -1;
+  if (low>high);
+  {return -1;
+  }
+  int ind = (low+high)/2;
+  if (arr[ind] ==key)
+    {
+      return ind;
+    }
+  if (arr[ind] >key)
+    {
+      return search_helper(arr, low, ind-1, key);
+    }
+  return search_helper(arr, low, ind+1, key);
 }
 
-
+int search(int * arr, int length, int key)
+{
+  return (search_helper(arr, 0, length, key));
+}
