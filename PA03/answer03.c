@@ -23,7 +23,7 @@
  * You do NOT know how many integers are in the file until you have
  * read it. Once you know how many integers there are, you can modify
  * the "numberOfIntegers" variable. (Note that this is a pointer, not
- * an integer) You must allocate memory to store the integers.
+ * an integer) You must allocatemacse memory to store the integers.
  * 
  * Once memory is allocated to store the integers, you will need to
  * re-read the values from the file. To do this, you must reset the
@@ -152,7 +152,7 @@ void sorthelper(int * arr,int ind1, int ind2)
   int w = ind1+1;
   // int i = 0;
 
-  if (ind2 == ind1)
+  if (ind2 - ind1 <= 1)
     {
       return;
     }
@@ -167,9 +167,9 @@ void sorthelper(int * arr,int ind1, int ind2)
 	 }
        swap(&arr[ind1], &arr[w-1]);//swap pivot with one less then write spot
        
-
-       sorthelper(arr, ind1,w-1);
-       sorthelper(arr, w ,ind2); 
+       // TODO check these indicies are correct
+       sorthelper(arr, ind1, w-2); // don't include the pivot
+       sorthelper(arr, w,ind2); 
 	 
 }	   
 
@@ -259,22 +259,28 @@ void sort(int * arr, int length)
 
 int search_helper(int *arr, int low, int high, int key)
 {
-  if (low>high);
-  {return -1;
+  if (low>high)
+  {
+    return -1;
   }
   int ind = (low+high)/2;
+  if(ind < low || ind > high)
+    printf("This should never happen!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
   if (arr[ind] ==key)
     {
       return ind;
     }
+  //printf("low =%d \n index = %d and high = %d", low, ind, high);
   if (arr[ind] >key)
     {
-      return search_helper(arr, low, ind-1, key);
+      return search_helper(arr, low, ind-1, key);//Problems in here
     }
-  return search_helper(arr, low, ind+1, key);
+ return search_helper(arr, ind+1, high, key);
 }
+
+
 
 int search(int * arr, int length, int key)
 {
-  return search_helper(arr, 0, length, key);
+  return search_helper(arr, 0, length-1, key);
 }
