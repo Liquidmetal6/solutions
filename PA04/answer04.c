@@ -29,22 +29,59 @@
  * = 2 + 1
  * = 3
  */
+void printPartition(int * part, int length)
+{
+  int ind;
+  for (ind = 0; ind < length - 1; ind ++)
+    {
+      printf("%d + ", part[ind]);
+    }
+  printf("%d\n", part[length - 1]);
+}
+
+void partition(int * part, int ind, int left)
+{
+  int val;
+  if (left == 0)
+    {
+      printPartition(part, ind);
+      return;
+    }
+  for (val = 1; val <= left; val ++)
+    {
+      part[ind] = val;
+      partition(part, ind + 1, left - val);
+    }
+}
+
+
 
 
 void partitionAll(int value)
 {
-
-  //int *buffer=malloc(value*sizeof(int));
-  int buffer[1024];
-partitionworker(buffer,0,value);  
-
-//free(buffer);
- printf("partitionAll %d\n", value);
+  /*printf("partitionAll %d\n", value);
+  int * buffer = malloc(sizeof(int) * value);
+  partitionworker(buffer,0,value);  
+  free(buffer);
+  /// printf("partitionAll %d\n", value);*/
+  int n=value;
+  if (n <= 0)
+    {  
+      return; 
+  }
+  int * arr;
+  arr = malloc(sizeof(int) * n);
+  partition(arr, 0, n);
+  free (arr);
+  return;
 }
 
+
+
+/*
 void partitionworker(int *arr, int pos, int value)
 {
-   if(value<=0)
+   if(value == 0)
     {
       printarr(arr,pos);
       return;
@@ -56,22 +93,51 @@ void partitionworker(int *arr, int pos, int value)
       partitionworker(arr, pos+1, value-1);
     }
     return;
-}
+    }
 
-void printarr(int*arr, int len)
-{
-  int i;
-  if(len>0)
+   int something;
+  if (value == 0)
     {
-      printf("%d", arr[0]);
+      printarr(arr, pos);
       return;
     }
-  for(i=1;i<len;++i)
+  for (something = 1; something <= value; something++)
     {
-      printf("  + %d",arr[i]);
+      arr[pos] = something;
+      partitionworker(arr, pos + 1, value - something);
     }
-  printf("\n");
+    }
+*/
+
+
+/*
+void printarr(int*arr, int len)
+{
+  // int i;
+  // if(len>0)
+  // {
+  //   printf("%d", arr[0]);
+  ///   return;
+  // }
+  // for(i=1;i<len;++i)
+  // {
+  //   printf("  + %d",arr[i]);
+  // }
+  // printf("\n");
+
+   int ind;
+  for (ind = 0; ind < len - 1; ind ++)
+    {
+      printf("%d + ", arr[ind]);
+    }
+  printf("%d\n=", arr[len - 1]);
 }
+
+*/
+
+
+
+
 
 
 
