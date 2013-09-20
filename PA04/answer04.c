@@ -155,14 +155,44 @@ partitionIncreasinghelper(arr, 0, n);
  * generates invalid partitions and checks validity before printing.
  *
  */
-
+void partitionDecreasinghelper(int * part, int ind, int left) 
+{
+int val;
+  if (left == 0)
+    {
+      printPartition(part, ind);
+      return;
+    }
+  for (val = 1; val <= left; val ++)
+    {
+       if(ind==0)
+	{
+	  part[ind] = val;
+	  partitionDecreasinghelper(part, ind + 1, left - val);
+	}
+       else if (val<part[ind-1])
+	{
+	  part[ind] = val;
+	  partitionDecreasinghelper(part, ind + 1, left - val);	  
+	}    
+    }
+}
 
 void partitionDecreasing(int value)
 {
   printf("partitionDecreasing %d\n", value);
-  
+  int n=value;
+  if (n <= 0)
+    {  
+      return; 
+    }
+  int * arr;
+  arr = malloc(sizeof(int) * n);
+  partitionDecreasinghelper(arr, 0, n);
+  free (arr);
+  return;
+    }
 
-}
 
 /*
  * =================================================================
@@ -182,7 +212,7 @@ void partitionDecreasing(int value)
  */
 void partitionoddhelp(int * part, int ind, int left)
 {
-  /*  int val;
+  int val;
   if (left == 0)
     {
       printPartition(part, ind);
@@ -196,11 +226,11 @@ void partitionoddhelp(int * part, int ind, int left)
 	  partitionoddhelp(part, ind + 1, left - val);
 	}
     }
-  */
+  
 }
 void partitionOdd(int value)
 {
-  /*  printf("partitionOdd %d\n", value);
+  printf("partitionOdd %d\n", value);
   int n=value;
   if (n <= 0)
     {  
@@ -212,7 +242,7 @@ void partitionOdd(int value)
   free (arr);
   
   return;
-  */} 
+  } 
 
 
 /*
