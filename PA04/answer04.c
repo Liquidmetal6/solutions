@@ -31,12 +31,14 @@
  */
 void printPartition(int * part, int length)
 {
+  printf("= ");
   int ind;
   for (ind = 0; ind < length - 1; ind ++)
     {
       printf("%d + ", part[ind]);
     }
   printf("%d\n", part[length - 1]);
+  // printf("\n");
 }
 
 void partition(int * part, int ind, int left)
@@ -59,11 +61,7 @@ void partition(int * part, int ind, int left)
 
 void partitionAll(int value)
 {
-  /*printf("partitionAll %d\n", value);
-  int * buffer = malloc(sizeof(int) * value);
-  partitionworker(buffer,0,value);  
-  free(buffer);
-  /// printf("partitionAll %d\n", value);*/
+  printf("partitionAll %d\n", value);
   int n=value;
   if (n <= 0)
     {  
@@ -73,74 +71,9 @@ void partitionAll(int value)
   arr = malloc(sizeof(int) * n);
   partition(arr, 0, n);
   free (arr);
+
   return;
 }
-
-
-
-/*
-void partitionworker(int *arr, int pos, int value)
-{
-   if(value == 0)
-    {
-      printarr(arr,pos);
-      return;
-    }
-  int i;
-  for(i=1;i<=value;++i)
-    {
-      arr[pos] = i;
-      partitionworker(arr, pos+1, value-1);
-    }
-    return;
-    }
-
-   int something;
-  if (value == 0)
-    {
-      printarr(arr, pos);
-      return;
-    }
-  for (something = 1; something <= value; something++)
-    {
-      arr[pos] = something;
-      partitionworker(arr, pos + 1, value - something);
-    }
-    }
-*/
-
-
-/*
-void printarr(int*arr, int len)
-{
-  // int i;
-  // if(len>0)
-  // {
-  //   printf("%d", arr[0]);
-  ///   return;
-  // }
-  // for(i=1;i<len;++i)
-  // {
-  //   printf("  + %d",arr[i]);
-  // }
-  // printf("\n");
-
-   int ind;
-  for (ind = 0; ind < len - 1; ind ++)
-    {
-      printf("%d + ", arr[ind]);
-    }
-  printf("%d\n=", arr[len - 1]);
-}
-
-*/
-
-
-
-
-
-
-
 
 /*
  * =================================================================
@@ -160,13 +93,44 @@ void printarr(int*arr, int len)
  * generates invalid partitions and checks validity before printing.
  *
  */
+//void partitionIncreasingHelper(int*, int, int)
 
+void partitionIncreasinghelper(int * part, int ind, int left)
+{
+  int val;
+  if (left == 0)
+    {
+      printPartition(part, ind);
+      return;
+    }
+  for (val = 1; val <= left; val ++)
+    {
+      if (val>part[val])
+	{
+	  part[ind] = val;
+	  partition(part, ind + 1, left - val);
+	}    
+    }
+}
 
 void partitionIncreasing(int value)
 {
   printf("partitionIncreasing %d\n", value);
+  int n=value;
+  if (n <= 0)
+    {  
+      return; 
+    }
+  int * arr;
+  arr = malloc(sizeof(int) * n);
+partitionIncreasinghelper(arr, 0, n);
+  free (arr);
 
+  return;
 }
+
+
+
 
 /*
  * =================================================================
