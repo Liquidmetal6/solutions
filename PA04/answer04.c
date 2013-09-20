@@ -265,7 +265,7 @@ void partitionOdd(int value)
  */
 void partitionevenhelp(int * part, int ind, int left)
 {
-  /*  int val;
+  int val;
   if (left == 0)
     {
       printPartition(part, ind);
@@ -279,10 +279,10 @@ void partitionevenhelp(int * part, int ind, int left)
 	  partitionevenhelp(part, ind + 1, left - val);
 	}
     }
-  */}
+  }
 void partitionEven(int value)
 {
-  /*  printf("partitionEven %d\n", value);  
+  printf("partitionEven %d\n", value);  
   int n=value;
   if (n <= 0)
     {  
@@ -294,7 +294,7 @@ void partitionEven(int value)
   free (arr);
 
   return;
-  */
+  
 }
 
 /*
@@ -314,11 +314,36 @@ void partitionEven(int value)
  * The program should generate only valid partitions.  Do not
  * generates invalid partitions and checks validity before printing.
  */
-
+void partitionOddandEvenHelper(int * part, int ind, int left)
+{
+  int val;
+  if (left == 0)
+    {
+      printPartition(part, ind);
+      return;
+    }
+  for (val = 1; val <= left; val ++)
+    {
+      if((val%2 ==1 && ind%2==0)  ||  ((val%2==0 && ind%2==1)))
+	{
+	  part[ind] = val;
+	  partitionOddandEvenHelper(part, ind + 1, left - val);
+	}
+    }
+}
 
 void partitionOddAndEven(int value)
 {
   printf("partitionOddAndEven %d\n", value);
+  int n=value;
+  if (n <= 0)
+    {  
+      return; 
+    }
+  int * arr;
+  arr = malloc(sizeof(int) * n);
+  partitionOddandEvenHelper(arr, 0, n);
+  free (arr);
   return;
 }  
 
@@ -337,26 +362,26 @@ void partitionOddAndEven(int value)
  * 
  * The program should generate only valid partitions.  Do not
  * generates invalid partitions and checks validity before printing.
- *//*
+ */
 int testPrime(int n)
 {
   int i;
   int true=1;
   int false = 0;
-  for(i=2;i<n;++i)
+  for(i=2;i<n;i++)
     {
-      if(n%i==0)
+      if(n%i==0&& n!=i)
 	{
-	  return true;
+	  return false;
 	}
     }
-  return false;
- */
+  return true;
+}
 
 
 void partitionPrimeHelper(int * part, int ind, int left)
 {
-  /* int val;
+     int val;
   int primetest;
   
   if (left == 0)
@@ -367,17 +392,17 @@ void partitionPrimeHelper(int * part, int ind, int left)
   for (val = 1; val <= left; val ++)
     {
       primetest = testPrime(val);  
-      if(primetest=1)
+      if(primetest==1&& val!=1)
 	{
 	  part[ind] = val;
 	  partitionPrimeHelper(part, ind + 1, left - val);
 	}
     }
-  */
+  
 }
 void partitionPrime(int value)
 {
-  /*
+  
   printf("partitionPrime %d\n", value);
   int n=value;
   if (n <= 0)
@@ -390,5 +415,5 @@ void partitionPrime(int value)
   free (arr);
   
   return;
-  */}
+    }
 
