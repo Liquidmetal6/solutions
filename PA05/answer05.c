@@ -170,7 +170,7 @@ char * * readString(char * filename, int * numString)
     }
   
  
-  fgets(buf, MAXIMUM_LENGTH, fptr);//read  a line including a space
+  // fgets(buf, MAXIMUM_LENGTH, fptr);//read  a line including a space
   int numLine = 0;
   
   while(fgets(buf, MAXIMUM_LENGTH, fptr) != NULL)//count lines in file
@@ -214,9 +214,15 @@ void printInteger(int * arrInteger, int numInteger)
 void printString(char * * arrString, int numString)
 {
   int i=0;
-  while(i<=numString)
+  while(i<numString)
     {
       printf("%s",arrString[i]);
+      // printf("%s", arrString[i]);     
+      int len = strlen(arrString[i]);     
+      if(len == 0 || arrString[i][len-1] != '\n') 
+	{
+	printf("\n");
+	}
       i++;
     }
 }
@@ -245,7 +251,7 @@ void freeInteger(int * arrInteger, int numInteger)
 void freeString(char * * arrString, int numString)
 {
   int ind;
-for(ind =0;ind<=numString; ind++)
+  for(ind =0;ind<numString; ind++)//Removed ==
   {
     free(arrString[ind]);
   }
@@ -308,7 +314,7 @@ int saveString(char * filename, char * * arrString, int numString)
   if(fp == NULL)
     return 0;  
  
- for(i=0;i<=numString;i++)
+  for(i=0;i<numString;i++)//Removed  =
     {
       fprintf(fp, "%s", arrString[i]); 
     }
@@ -360,8 +366,10 @@ void sortInteger(int * arrInteger, int numInteger)
 
 int compStr(const void *p1, const void *p2)
 {
+  char * * a1 = (char * *) p1;
+  char * * a2 = (char * *) p2;
   int result = 0;
-  result = strcmp(*(char * const *)p1,* (char * const *) p2);
+  result = strcmp(*a1,*a2);
   return(result);
 }
 
