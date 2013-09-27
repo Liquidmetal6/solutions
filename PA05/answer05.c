@@ -216,8 +216,7 @@ void printString(char * * arrString, int numString)
   int i=0;
   while(i<numString)
     {
-      printf("%s",arrString[i]);
-      // printf("%s", arrString[i]);     
+      printf("%s",arrString[i]);     
       int len = strlen(arrString[i]);     
       if(len == 0 || arrString[i][len-1] != '\n') 
 	{
@@ -317,6 +316,11 @@ int saveString(char * filename, char * * arrString, int numString)
   for(i=0;i<numString;i++)//Removed  =
     {
       fprintf(fp, "%s", arrString[i]); 
+      int len = strlen(arrString[i]);     
+      if(len == 0 || arrString[i][len-1] != '\n') 
+	{
+	  fprintf(fp,"\n");
+	}
     }
 
   fclose(fp);
@@ -324,6 +328,11 @@ int saveString(char * filename, char * * arrString, int numString)
   return 1;
 }
 
+/*int len = strlen(arrString[i]);     
+      if(len == 0 || arrString[i][len-1] != '\n') 
+	{
+	printf("\n");
+	}*/
 /* ----------------------------------------------- */
 /*
  * sort an arry of integers by calling the built-in qsort function in
