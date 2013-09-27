@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "pa05.h"
-#define MAXIMUM_LENGTH 80
+#define MAXIMUM_LENGTH 180
 
 /*
  * Read a file of integers.
@@ -166,6 +166,7 @@ char * * readString(char * filename, int * numString)
   FILE* fptr = fopen(filename,"r");
   if (fptr==NULL)
     {
+      return NULL;
     }
   
  
@@ -176,16 +177,16 @@ char * * readString(char * filename, int * numString)
     {
       numLine++;
     }
-  
+  *numString=numLine;
   char ** strArr;
   strArr = malloc(sizeof(char*) * numLine);
   int ind =0;
-  
+  fseek(fptr,0, SEEK_SET);
   while(fgets(buf, MAXIMUM_LENGTH, fptr) != NULL)
     {
       strArr[ind] = malloc(sizeof(char)* (strlen(buf)+1));
       strcpy(strArr[ind],buf);
-      ind ++;
+      ind++;
     } 
   fclose(fptr);
   return(strArr);
@@ -198,9 +199,9 @@ char * * readString(char * filename, int * numString)
 void printInteger(int * arrInteger, int numInteger)
 {
   int i=0;
-  for(i=0;i<=numInteger;i++)
+  for(i=0;i<numInteger;i++)
     {
-      printf("%d",arrInteger[i]);
+      printf("%d\n",arrInteger[i]);
     }
 }
 
@@ -244,11 +245,11 @@ void freeInteger(int * arrInteger, int numInteger)
 void freeString(char * * arrString, int numString)
 {
   int ind;
-for(ind =0;ind<numString; ind++)
+for(ind =0;ind<=numString; ind++)
   {
-    free(&arrString[ind]);
+    free(arrString[ind]);
   }
- free(&arrString[ind]);
+ free(arrString);
 }
 
 /* ----------------------------------------------- */
@@ -273,9 +274,11 @@ int saveInteger(char * filename, int * arrInteger, int numInteger)
 {
    int i = 0;
    FILE* fp = fopen(filename,"w");
-   for(i=0;i<=numInteger;i++)
+   if(fp == NULL)
+     return 0;   
+for(i=0;i<numInteger;i++)
      {
-       fprintf(filename, "%d\n", arrInteger[i]); 	      
+       fprintf(fp, "%d\n",arrInteger[i]); 	      
      }
    fclose(fp);
    return 1;
@@ -301,12 +304,17 @@ int saveInteger(char * filename, int * arrInteger, int numInteger)
 int saveString(char * filename, char * * arrString, int numString)
 {
   int i=0;
-  FILE* fp = fopen(filename,"r");
-  for(i;i<=numString;i++)
+  FILE * fp = fopen(filename,"w");
+  if(fp == NULL)
+    return 0;  
+ 
+ for(i=0;i<=numString;i++)
     {
       fprintf(fp, "%s", arrString[i]); 
     }
+
   fclose(fp);
+
   return 1;
 }
 
@@ -327,8 +335,8 @@ int compint(const void *p1, const void *p2)
   if (intv1<intv2)
     return -1;
   if (intv1==intv2)
-    return 1;
-  return(0);
+    return 0;
+  return(1);
 }
 
 
@@ -350,8 +358,16 @@ void sortInteger(int * arrInteger, int numInteger)
  */
 
 
+int compStr(const void *p1, const void *p2)
+{
+  int result = 0;
+  result = strcmp(*(char * const *)p1,* (char * const *) p2);
+  return(result);
+}
+
 void sortString(char * * arrString, int numString)
 {
+  qsort(arrString, numString, sizeof(char*),compStr);
 }
 
 
