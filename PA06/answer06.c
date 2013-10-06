@@ -165,60 +165,46 @@ struct Image * loadImage(const char* filename)
 {
  
   //VARIABLES
-  FILE *fp = fopen(filename, "r"); 
-  //int fileLen = 0;
+  FILE *fp = fopen(filename, "rb"); 
   struct ImageHeader buffer;
-  
-  {
-    /*
-    struct ImageHeader * header;
-    struct ImageHeader on_stack;
+  char* comment=NULL;
+  char* pixeldata = NULL;  
+  int totalread = 0;
 
-    printf("\n---- sizeof(...) ----\n");
-    printf("sizeof(header) = %d\n", (int) sizeof(header));
-    printf("sizeof(on_stack) = %d\n", (int) sizeof(on_stack));
-    printf("\n---- stack tests ----\n");
-    printf("&header = %p\n", &header);
-    printf("&on_stack = %p\n", &on_stack);
-    printf("on_stack.width = %d\n", on_stack.width);
-    printf("\n----\n");
-    printf("header = %p\n", header);
-    header = NULL;
-    printf("header = %p\n", header);
-
-
-    header = malloc(sizeof(struct ImageHeader));
-    printf("header = %p\n", header);
-    printf("header->width = %d\n", header->width);
-    exit(0);
-    */
-    } 
-  
-  
   //EXECUTIONS
   if(fp== NULL) //Returns null if file does not open
     {
       return NULL; 
     }
-    fread(&buffer,sizeof(struct ImageHeader), 1,fp);
-  
-  //  printf("%d", buffer -> magic_bits);
-  /*
-    fseek(fp, 0, SEEK_END);//goes to end of the file to get length of the file
-    fileLen=ftell(fp);//fileLen = length of file
-    fseek(fp, 0, SEEK_SET);//rewinds
-    
-    buffer =malloc(fileLen+1);
-    fread(buffer, fileLen,1,fp);
-  */
 
+  fread(&buffer,sizeof(struct ImageHeader), 1,fp);
 
-//int bytenumber = 0;
- /*  while(fscanf(fp, "%d")>0)
+  if (buffer.magic_bits != ECE264_IMAGE_MAGIC_BITS)
     {
-      bytenumber++;
-      }*/
+      return NULL;
+    }
 
+  if(buffer.height==0 || buffer.width==0)
+    {
+      return NULL;
+    }  
+
+  comment = malloc(sizeof(char) *buffer.comment_len); 
+  if (buffer.comment_len>0)
+    {
+      if (comment==NULL)
+	return NULL;
+    }
+  fread(comment,buffer.comment_len,1 ,fp);
+  totalread = buffer.width * buffer.height;
+  pixeldata = malloc(sizeof(uint32_t)* totalread);
+
+  fread(pixeldata, totalread, 1, fp);
+
+  fread(pixeldata, totalread+1),1,fp);
+   
+
+    fclose(fp);
     return NULL;
 }
 
