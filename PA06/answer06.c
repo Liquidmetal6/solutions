@@ -134,6 +134,7 @@
  * To complete this function, you must:
  * (1)  use fopen to open the file and check that the file was truly 
  *      opened
+
  * (2)  read the 16 byte header, checking that you actually read 16 
  *      bytes. (There is no guarantee that the input file is 16 bytes
  *      long.)
@@ -168,24 +169,29 @@ struct Image * loadImage(const char* filename)
   FILE *fp = fopen(filename, "rb"); 
   struct ImageHeader buffer;
   char* comment=NULL;
-  char* pixeldata = NULL;  
-  int totalread = 0;
+  uint8_t* pixeldata = 0;  
+ 
+
+ int totalread = 0;
 
   //EXECUTIONS
   if(fp== NULL) //Returns null if file does not open
     {
       return NULL; 
+      
     }
 
   fread(&buffer,sizeof(struct ImageHeader), 1,fp);
-
+  //Check that this actually read
   if (buffer.magic_bits != ECE264_IMAGE_MAGIC_BITS)
     {
+      fclose(fp);
       return NULL;
     }
 
   if(buffer.height==0 || buffer.width==0)
     {
+      fclose(fp);
       return NULL;
     }  
 
@@ -193,16 +199,39 @@ struct Image * loadImage(const char* filename)
   if (buffer.comment_len>0)
     {
       if (comment==NULL)
-	return NULL;
+	{
+	  fclose(fp);
+	  return NULL;
+	}      
     }
+ 
   fread(comment,buffer.comment_len,1 ,fp);
+  //Check that I read comments correctly here
+
   totalread = buffer.width * buffer.height;
-  pixeldata = malloc(sizeof(uint32_t)* totalread);
+  pixeldata = malloc(sizeof(uint8_t) * totalread);
 
   fread(pixeldata, totalread, 1, fp);
+  //Check that the pixels read correctly
 
-  fread(pixeldata, totalread+1),1,fp);
-   
+  fread(pixeldata, totalread+1,1,fp);
+  //Preceding line reads one more byte, if it fails then it passes, it it successfully reads then it fails
+
+
+  //Need to make a struct image  pointer and fill in the values
+
+  /*
+    struct returnImage
+    {
+      int width;
+      int height;
+      char * returncomment;
+      uint8_t * data;
+      }*/
+    // width = buffer.width;
+    // height  = buffer.height;
+    //for loop for returncomment and data? or can i return what I have already made?
+
 
     fclose(fp);
     return NULL;
@@ -221,7 +250,6 @@ struct Image * loadImage(const char* filename)
  */
 void freeImage(struct Image * image)
 {
-
 }
 
 /*
@@ -249,8 +277,31 @@ void freeImage(struct Image * image)
  * to complete step (2). 
  */
 void linearNormalization(struct Image * image)
-{
+{/*
+  int index1 = 0;
+  int index2 = 0;
+  int max = 0;
+  int min = 0;
 
+  for(index1 = 1; index1!='\0';index1++)
+    {
+      if (pixel[index1]>pixel[index1 - 1])
+	{
+	  max =pixel[index1];
+	}
+      if (pixel[index1]<pixel[index1-1])
+	{
+	  min = pixel[index1];
+	}
+    }
+
+
+  for (index2 = 0;index2!='\0';index2++)
+    {
+      pixel[index2] = (pixel[index2] - min) * 255.0 / (max - min);
+    }
+
+ */
 }
 
 
