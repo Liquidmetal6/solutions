@@ -167,11 +167,14 @@ struct Image * loadImage(const char* filename)
  
   //VARIABLES
   FILE *fp = fopen(filename, "rb"); 
-  struct ImageHeader buffer;
-  char* comment=NULL;
-  uint8_t* pixeldata = 0;  
+  
+struct ImageHeader * buffer = NULL;
  
-
+  char* comment=NULL;
+  uint8_t* data = 0;  
+  int width;
+  int height; 
+  int retval = 0;
  int totalread = 0;
 
   //EXECUTIONS
@@ -181,22 +184,22 @@ struct Image * loadImage(const char* filename)
       
     }
 
-  fread(&buffer,sizeof(struct ImageHeader), 1,fp);
+  retval = fread(buffer,sizeof(struct ImageHeader), 1,fp);
   //Check that this actually read
-  if (buffer.magic_bits != ECE264_IMAGE_MAGIC_BITS)
+  if (buffer->magic_bits != ECE264_IMAGE_MAGIC_BITS)
     {
       fclose(fp);
       return NULL;
     }
 
-  if(buffer.height==0 || buffer.width==0)
+  if(buffer->height==0 || buffer->width==0)
     {
       fclose(fp);
       return NULL;
     }  
 
-  comment = malloc(sizeof(char) *buffer.comment_len); 
-  if (buffer.comment_len>0)
+  comment = malloc(sizeof(char) *buffer->comment_len); 
+  if (buffer -> comment_len>0)
     {
       if (comment==NULL)
 	{
@@ -205,36 +208,53 @@ struct Image * loadImage(const char* filename)
 	}      
     }
  
-  fread(comment,buffer.comment_len,1 ,fp);
+  retval =fread(comment,buffer->comment_len,1 ,fp);
   //Check that I read comments correctly here
-
-  totalread = buffer.width * buffer.height;
-  pixeldata = malloc(sizeof(uint8_t) * totalread);
-
-  fread(pixeldata, totalread, 1, fp);
-  //Check that the pixels read correctly
-
-  fread(pixeldata, totalread+1,1,fp);
-  //Preceding line reads one more byte, if it fails then it passes, it it successfully reads then it fails
-
-
-  //Need to make a struct image  pointer and fill in the values
-
-  /*
-    struct returnImage
+  if (retval!=0)
     {
-      int width;
-      int height;
-      char * returncomment;
-      uint8_t * data;
-      }*/
-    // width = buffer.width;
-    // height  = buffer.height;
-    //for loop for returncomment and data? or can i return what I have already made?
+      fclose(fp);
+      return NULL;
+    }
 
 
-    fclose(fp);
-    return NULL;
+  totalread = buffer->width * buffer->height;
+  data = malloc(sizeof(uint8_t) * totalread);
+  if(data==NULL)
+    {
+      fclose(fp);
+      return NULL;
+    }
+
+ retval = fread(data, totalread, 1, fp);
+ if(retval !=1)
+   {
+     fclose(fp);
+     return NULL;
+   } 
+ //Check that the pixels read correctly, done in preceding lines
+
+ retval = fread(data, totalread+1,1,fp);
+  //Preceding line reads one more byte, if it fails then it passes, it it successfully reads then it fails
+ if(retval==1)
+   {
+     fclose(fp);
+     return NULL;
+   }
+
+ /* struct Image * img
+ {
+   img = malloc(sizeof(struct Image));
+   img -> width=header->width
+img->height = header->height
+   
+   }*/
+  width = buffer->width;
+  height = buffer->height;
+ 
+    
+  fclose(fp);
+  return (NULL);
+
 }
 
 
