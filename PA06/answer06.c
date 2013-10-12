@@ -166,96 +166,164 @@ struct Image * loadImage(const char* filename)
 {
  
   //VARIABLES
-  FILE *fp = fopen(filename, "rb"); 
-  
-struct ImageHeader * buffer = NULL;
- 
-  char* comment=NULL;
-  uint8_t* data = 0;  
-  int width;
-  int height; 
-  int retval = 0;
- int totalread = 0;
-
-  //EXECUTIONS
-  if(fp== NULL) //Returns null if file does not open
-    {
-      return NULL; 
-      
+struct ImageHeader * hdr2; // on heap, malloc, free
+FILE * fptr = fopen(filename, "r");
+if (fptr == NULL)
+  {
+    return NULL;
     }
 
-  retval = fread(buffer,sizeof(struct ImageHeader), 1,fp);
-  //Check that this actually read
-  if (buffer->magic_bits != ECE264_IMAGE_MAGIC_BITS)
-    {
-      fclose(fp);
-      return NULL;
-    }
+int retval;
 
-  if(buffer->height==0 || buffer->width==0)
-    {
-      fclose(fp);
-      return NULL;
-    }  
+hdr2 = malloc(sizeof(struct ImageHeader));
+if (hdr2 == NULL)
+  {
+    free(hdr2);
+    fclose(fptr);
+    return NULL;
+  }
 
-  comment = malloc(sizeof(char) *buffer->comment_len); 
-  if (buffer -> comment_len>0)
-    {
-      if (comment==NULL)
-	{
-	  fclose(fp);
-	  return NULL;
-	}      
-    }
- 
-  retval =fread(comment,buffer->comment_len,1 ,fp);
-  //Check that I read comments correctly here
-  if (retval!=0)
-    {
-      fclose(fp);
-      return NULL;
+retval = fread(hdr2, sizeof(struct ImageHeader), 1, fptr);
+
+if (retval != 1)
+  {
+    free(hdr2);
+    hdr2 = NULL;//test
+    fclose(fptr);
+    return NULL;
+    // error
     }
 
 
-  totalread = buffer->width * buffer->height;
-  data = malloc(sizeof(uint8_t) * totalread);
-  if(data==NULL)
-    {
-      fclose(fp);
-      return NULL;
-    }
+if (hdr2 -> magic_bits != ECE264_IMAGE_MAGIC_BITS)
+  {
+    free(hdr2);
+    hdr2 = NULL; //test
+    fclose(fptr);
+    return NULL;
+    // error
+  }
 
- retval = fread(data, totalread, 1, fp);
- if(retval !=1)
+if (hdr2->width == 0||hdr2->height ==0)
+  {
+    free(hdr2);
+    hdr2 = NULL;//test
+    fclose(fptr);
+    return NULL;
+    // error
+  }
+
+
+
+struct Image * img = NULL;
+
+img = malloc(sizeof(struct Image));
+ if(img == NULL)
    {
-     fclose(fp);
+     fclose(fptr); // free(img);
      return NULL;
-   } 
- //Check that the pixels read correctly, done in preceding lines
+     //do something
+     }
 
- retval = fread(data, totalread+1,1,fp);
-  //Preceding line reads one more byte, if it fails then it passes, it it successfully reads then it fails
- if(retval==1)
+ img -> width = hdr2 -> width;
+ img ->height=hdr2->height;                                              
+ img -> comment = malloc(sizeof(char) * (hdr2->comment_len));
+ img -> data = malloc(sizeof(uint8_t) * hdr2->width * hdr2->height);
+ retval = fread(img->comment, sizeof(char), hdr2->comment_len, fptr); 
+ 
+ if(img -> comment == NULL)
    {
-     fclose(fp);
+     free(hdr2);
+     hdr2 = NULL;/////////
+     free(img->data);
+     img->data  = NULL;///////
+     free(img->comment);
+     img->comment = NULL;/////////
+     free(img);
+     img = NULL;/////////
+     fclose(fptr);
+     return NULL;
+     //do something, don't forget to free whatever you have allocated
+     }
+
+//lookg at the img-> comment (should free)
+
+
+
+if (retval != hdr2->comment_len)
+  {
+    free(hdr2);
+    hdr2 = NULL;/////////
+    free(img->data);
+    free(img->comment);  
+    free(img);
+    fclose(fptr);
+    return NULL;
+    // error
+    }
+/*	     
+if(img->comment[hdr2->comment_len-1]=='\0')
+   {
+     free(hdr2);
+     free(img->data);
+     free(img->comment);
+     free(img);     
+     fclose(fptr);
+     return NULL;
+     }*/
+
+ if(img->data==NULL)
+   {
+     free(hdr2);    
+     hdr2 = NULL;/////////// 
+     free(img->comment);
+     free(img);     
+     fclose(fptr);
+     return NULL;
+     }
+retval = fread(img->data, sizeof(uint8_t),hdr2->width * hdr2->height, fptr);
+
+if (retval != (hdr2->width * hdr2->height))
+  {
+    
+    free(hdr2);
+    hdr2 = NULL;///////////
+    free(img->data);
+    free(img->comment);
+    free(img);
+    fclose(fptr);
+    return NULL;
+    }
+
+  uint8_t j = 0;
+ if(fread(&j, sizeof(uint8_t),1,fptr)==2)
+   {
+     free(hdr2);
+     hdr2 = NULL;////////
+     free(img->data);
+     free(img->comment);
+     fclose(fptr);
+   }
+ 
+
+
+ retval = fread(img ->data, sizeof(uint8_t), hdr2->width * hdr2->height +1, fptr);
+  if(retval==hdr2->width*hdr2->height+1)
+   {
+     free(hdr2);
+     hdr2 = NULL;//////////////////
+     free(img);
+     //error
+     fclose(fptr);
      return NULL;
    }
-
- /* struct Image * img
- {
-   img = malloc(sizeof(struct Image));
-   img -> width=header->width
-img->height = header->height
-   
-   }*/
-  width = buffer->width;
-  height = buffer->height;
  
+  free(hdr2);
+  hdr2 = NULL;
+fclose(fptr); 
+return (img);
     
-  fclose(fp);
-  return (NULL);
-
-}
+ }
 
 
 /*
@@ -270,6 +338,12 @@ img->height = header->height
  */
 void freeImage(struct Image * image)
 {
+  if(image!=NULL)
+    {
+      free(image->data);
+      free(image->comment);
+    }
+  free(image);
 }
 
 /*
@@ -297,32 +371,28 @@ void freeImage(struct Image * image)
  * to complete step (2). 
  */
 void linearNormalization(struct Image * image)
-{/*
+{
   int index1 = 0;
   int index2 = 0;
+  //int totaldata = image->height * image->width;
   int max = 0;
-  int min = 0;
-
-  for(index1 = 1; index1!='\0';index1++)
+  int min = 255;
+  
+  // if(image -> data[i] > max)
+  //  set max equal to this image
+  for(index1=0; index1<(image->height * image->width); index1++)
     {
-      if (pixel[index1]>pixel[index1 - 1])
+      if(image->data[index1] > max)
 	{
-	  max =pixel[index1];
+	  max= image->data[index1];  
 	}
-      if (pixel[index1]<pixel[index1-1])
+      if(image->data[index1]<min)
 	{
-	  min = pixel[index1];
+	  min = image->data[index1];
 	}
-    }
-
-
-  for (index2 = 0;index2!='\0';index2++)
+    }     
+  for(index2 = 0; index2<(image->height * image->width);index2++)
     {
-      pixel[index2] = (pixel[index2] - min) * 255.0 / (max - min);
+      image->data[index2] = (image->data[index2]- min) * 255.0 / (max - min);  
     }
-
- */
 }
-
-
-
