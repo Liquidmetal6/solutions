@@ -100,7 +100,10 @@ Node * List_build(int * value, int * index, int length)
   int i;
  for(i = 0; i < length; i++)
    {
+     if(index[i]!=0)
+      { 
      head = List_insert_ascend(head, value[i], index[i]);
+      }
    }
  return head;
 }
@@ -131,8 +134,13 @@ Node * List_insert_ascend(Node * head, int value, int index)
     {
       return List_create(value, index);
     }
-  
-  if ((head -> value) > value)
+
+  if((head->index) ==index)
+    {     
+      return head;
+    }
+ 
+ if ((head -> index) > index)
     {
       Node* p = List_create(value,index);
       p -> next = head;
@@ -141,7 +149,7 @@ Node * List_insert_ascend(Node * head, int value, int index)
   head ->next = List_insert_ascend(head -> next, value, index);
   return head;
   
-  return NULL;
+  //  return NULL;
 }
 
 
@@ -157,7 +165,7 @@ Node * List_insert_ascend(Node * head, int value, int index)
  */
 Node * List_delete(Node * head, int index)
 {
-  int i = 0;
+  /*  int i = 0;
   Node * NodeDelete= NULL;
   int lower = 0;
   int higher = 0;
@@ -173,10 +181,19 @@ Node * List_delete(Node * head, int index)
 	  higher = head->index;
 	}
 
+	}*/
+  if(head==NULL)
+    {
+      return NULL;
     }
-
-
-
+  if (head->index == index)
+    {
+      Node *tempP;
+      tempP = head->next;
+      free(head);
+      return(tempP);
+    }
+  head->next = List_delete(head->next, index);
  return(head);
 }
 
@@ -197,9 +214,26 @@ Node * List_delete(Node * head, int index)
  * lists, and then merge the second into the copy. In this way the
  * original copy of the list is not "mutated".
  */
+Node * List_copy_helper(Node * head, Node * copy)
+{
+  if(head==NULL)
+    {
+      return (copy);
+    }
+ copy =  List_insert_ascend(copy, head->value, head->index);
+ return(List_copy_helper(head->next, copy));
+}
+
 Node * List_copy(Node * head)
 {
-    return NULL;
+  if (head ==NULL)
+    {
+      return(NULL);
+    }
+  Node * copy = NULL;
+  copy  = List_create(head->value, head->index);
+  return(List_copy_helper(head, copy));
+
 }
 
 
@@ -223,9 +257,59 @@ Node * List_copy(Node * head)
  * This function should not modify either "head1" or "head2". You only
  * need to make a clone of "head1".
  */
-Node * List_merge(Node * head1, Node * head2)
-{
+Node * insert2(Node * head, int value, int index)
 
-    return NULL;
+{
+  if (head == NULL)
+    {
+      return List_create(value, index);
+    }
+  if((head->index) ==index)
+    {     
+      head->value +=value;
+      return head;
+    }
+ 
+ if ((head -> index) > index)
+    {
+      Node* p = List_create(value,index);
+      p -> next = head;
+      return p;
+    }
+  head ->next = insert2(head -> next, value, index);
+  return head;
 }
 
+ 
+
+Node * List_merge(Node * head1, Node * head2)
+{
+   Node * head3 = NULL;
+  head3 =List_copy(head1);
+  while(head2!=NULL)
+    {
+      head3 =insert2(head3,head2->value,head2->index); 
+      head2 = head2->next;    
+    }
+
+  /* while(head3!=NULL)
+    {
+      if(head3->value==0)
+      {
+	  head3 = List_delete(head3, head3->index);
+	  }
+	  }*/
+    return head3;
+}
+
+
+
+
+  //copy list1 oto list 3
+  // while list2 is NULL
+  //list 3 = insert4
+	 
+
+  /* if((list3->index)==head->index)
+    {
+    }*/
